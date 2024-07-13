@@ -1,22 +1,11 @@
-// App.tsx
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-//import InicioScreen from './screens/InicioScreen';
-import CartasScreen from './screens/CartasScreen'; // Importa la pantalla CartasScreen y otras pantallas según sea necesario
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import Main from './Navigation/Main'
 
-const Stack = createStackNavigator();
-
-const App = () => {
+export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Inicio">
-        {/* <Stack.Screen name="Inicio" component={InicioScreen} /> */}
-        <Stack.Screen name="Cartas" component={CartasScreen} />
-        {/* Agrega más pantallas aquí si es necesario */}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+    <Main/>
+  )
+}
 
-export default App;
+const styles = StyleSheet.create({})

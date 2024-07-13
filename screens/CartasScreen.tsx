@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import backImage from '../assets/back.png';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 
-const totalCards = 12;
+const totalCards = 4;
 const availableCards: string[] = ['A', 'K', 'Q', 'J'];
 
 interface Card {
@@ -18,10 +17,18 @@ const CartasScreen = () => {
   const [valuesUsed, setValuesUsed] = useState<number[]>([]);
   const [currentMove, setCurrentMove] = useState<number>(0);
   const [currentAttempts, setCurrentAttempts] = useState<number>(0);
-
+  const [pairsFound, setPairsFound] = useState<number>(0);
   useEffect(() => {
     initializeGame();
   }, []);
+
+  useEffect(() => {
+    if (pairsFound === totalCards / 2) {
+      console.log("You win!");
+      Alert.alert("¡Felicidades!", "¡Has ganado!");
+    }
+  }, [pairsFound]);
+
 
   const initializeGame = () => {
     let initialCards: Card[] = [];
@@ -36,6 +43,8 @@ const CartasScreen = () => {
     }
 
     setCards(initialCards);
+
+  
   };
 
   const activate = (id: number) => {
@@ -51,19 +60,23 @@ const CartasScreen = () => {
             setCurrentAttempts(currentAttempts + 1);
 
             if (newSelectedCards[0].value === newSelectedCards[1].value) {
-              console.log("bbbbbbbbbbbbbbbb");
+              console.log("Is Match");
               
               if (updatedCards && Array.isArray(updatedCards)) {
                 const matchedCards = updatedCards.map(c => {
-                  console.log("aaaaaaaaaaaaaaaaa");
+            
                   if (c.id === newSelectedCards[0].id || c.id === newSelectedCards[1].id) {
                     c.isMatched = true;
                   }
                   return c;
                 });
                 setCards(matchedCards);
+           
               } else {
-                console.error("updatedCards is not defined or not an array");
+                // console.error("updatedCards is not defined or not an array");
+                setPairsFound(pairsFound+1);
+                
+
               }
               
               setSelectedCards([]);
@@ -119,7 +132,7 @@ const CartasScreen = () => {
               <View style={[styles.cardFace, card.isActive && styles.cardFaceActive]}>
                 <Text style={styles.cardText}>{card.value}</Text>
               </View>
-              {!card.isActive && <Image source={backImage} style={styles.cardBack} />}
+              {!card.isActive && <Image source={require('../assets/back.png')} style={styles.cardBack} />}
             </View>
           </TouchableOpacity>
         ))}
